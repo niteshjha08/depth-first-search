@@ -44,7 +44,7 @@ while(true){
 int main(){
 
 	rwa2::Mouse mouse;
-	mouse.set_goal(15,3);
+	mouse.set_goal(7,8);
 	// if(mouse.search_maze(0,0))
 	// 	mouse.print_stack();
 	bool found=false;

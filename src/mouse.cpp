@@ -49,7 +49,10 @@ void rwa2::Mouse::display_walls() {
 void rwa2::Mouse::turn_left(){
     m_direction=(m_direction+3)%4;
     std::cerr<<"Turning left";
+    // modify_maze(m_x, m_y, m_direction);
     API::turnLeft();
+
+
 }
 void rwa2::Mouse::v_turn_left(){
     v_direction=(v_direction+3)%4;
@@ -60,7 +63,9 @@ void rwa2::Mouse::v_turn_left(){
 void rwa2::Mouse::turn_right(){
     m_direction=(m_direction+1)%4;
     std::cerr<<"Turning right";
+    // modify_maze(m_x, m_y, m_direction);
     API::turnRight();
+
 }
 void rwa2::Mouse::v_turn_right(){
     v_direction=(v_direction+1)%4;
@@ -69,7 +74,10 @@ void rwa2::Mouse::v_turn_right(){
 }
 
 void rwa2::Mouse::move_forward(){
+    API::clearColor(m_x, m_y);
+    modify_maze(m_x, m_y, m_direction);
     API::moveForward();
+
     // std::cerr<<"Moving forward, m_direction is:"<<m_direction;
     if(m_direction==0)
         m_y+=1;
@@ -179,9 +187,12 @@ void rwa2::Mouse::go_to_node(int x, int y){
             rotation_direction=1;
 
     }
-    if(!same_pos)
-        {align_direction(rotation_direction);
-        move_forward();}
+    if (!same_pos)         {
+        modify_maze(m_x, m_y, m_direction);
+        align_direction(rotation_direction);
+        move_forward();
+        // modify_maze(m_x, m_y, m_direction);
+    }
 }
 
 
@@ -211,12 +222,12 @@ void rwa2::Mouse::v_go_to_node(int x, int y){
         v_move_forward();}
 }
 
-void rwa2::Mouse::give_info(int dir,int x,int y){
-    std::cerr<<"X here is:"<<x<<" and Y is: "<<y;
-    // m_maze.at(x).at(y).set_wall(dir,API::wallFront());
-    std::cerr<<'\n'<<"INFO: is_valid:"<<is_valid(x,y,dir)<< " is_visited: "<<is_visited(x,y)<<" wallFront():"<<API::wallFront()<<"m_direction:"<<m_direction<<'\n';
+// void rwa2::Mouse::give_info(int dir,int x,int y){
+//     std::cerr<<"X here is:"<<x<<" and Y is: "<<y;
+//     // m_maze.at(x).at(y).set_wall(dir,API::wallFront());
+//     std::cerr<<'\n'<<"INFO: is_valid:"<<is_valid(x,y,dir)<< " is_visited: "<<is_visited(x,y)<<" wallFront():"<<API::wallFront()<<"m_direction:"<<m_direction<<'\n';
 
-}
+// }
 // Solve maze func
 // bool rwa2::Mouse::new_search(int goal_x,int goal_y){
 //     std::cerr<<"Current position: "<<m_x<<", "<<m_y;
@@ -343,7 +354,7 @@ void rwa2::Mouse::color_path(){
 // Search maze -virtual planning
 bool rwa2::Mouse::search_maze(int x, int y){
     
-    API::setColor(x,y,'g');
+    API::setColor(x,y,'w');
     std::array<int,2> n {x, y};
     if(x==goal_x && y==goal_y){
         std::cerr<<"REACHED GOAL!";
@@ -476,14 +487,15 @@ bool rwa2::Mouse::move_path_step(int x, int y){
             return false;}
         // std::cerr<<"Robot moving forward now";
         move_forward();
+        
         return true;
 
         } 
         return true;
 }
 bool rwa2::Mouse::trace_path(){
-    std::cerr<<"NOW INSIDE TRACE PATH";
-    std::cerr<<"Stack length is:"<<s.size();
+    // std::cerr<<"NOW INSIDE TRACE PATH";
+    // std::cerr<<"Stack length is:"<<s.size();
     // v_print_stack();
 
     std::stack<std::array<int,2>> temp;
@@ -504,7 +516,7 @@ bool rwa2::Mouse::trace_path(){
         if(!move_path_step(temp.top()[0],temp.top()[1]))
             {
             // std::cerr<<"v_x at break is:"<<x<<"v_y at break is:"<<y<<" v_direction at break"<<v_direction;
-            modify_maze(m_x,m_y,m_direction);
+            // modify_maze(m_x,m_y,m_direction);
             std::stack<std::array<int,2>> empty{};
             API::clearAllColor();
             s=empty;
@@ -520,8 +532,18 @@ bool rwa2::Mouse::trace_path(){
 void rwa2::Mouse::modify_maze(int x,int y, int direction){
     std::cerr<<"MODIFYING MAZE NOW";
     // API::moveForward();
-    std::cerr<<"wall set at: "<<x<<", "<<y<<" in "<<direction<<" direction";
-    m_maze.at(x).at(y).set_wall(direction,true);
+    //std::cerr<<"wall set at: "<<x<<", "<<y<<" in "<<direction<<" direction";
+    // if (API::wallFront) {
+    //     m_maze.at(x).at(y).set_wall(direction, true);
+    // }
+    m_maze.at(x).at(y).set_wall((direction) % 4, API::wallFront());
+    m_maze.at(x).at(y).set_wall(((4 + direction - 1) % 4), API::wallLeft());
+    m_maze.at(x).at(y).set_wall(((4 + direction - 3) % 4), API::wallRight());
+    // else if (API::wallRight) {
+    //     m_maze.at(x).at(y).set_wall((4 - direction + 1) % 4, true);
+    // }
+    
+
     display_walls();
     // API::moveForward();
 }
