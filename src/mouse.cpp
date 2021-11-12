@@ -342,7 +342,7 @@ void rwa2::Mouse::color_path(){
 
 // Search maze -virtual planning
 bool rwa2::Mouse::search_maze(int x, int y){
-    
+    std::cerr<<"Length of stack is:"<<s.size();
     API::setColor(x,y,'g');
     std::array<int,2> n {x, y};
     if(x==goal_x && y==goal_y){
@@ -370,6 +370,7 @@ bool rwa2::Mouse::search_maze(int x, int y){
         
         // v_align_direction(0); //Rotate north
         // give_info(0,x,y+1);
+        std::cerr<<" North: is_valid: "<<is_valid(x,y,0)<<" is_visited: "<<is_visited(x,y+1);
         if(is_valid(x,y,0) && !is_visited(x,y+1)) //is_valid() gives 'wall_present according to m_maze?'
             {y+=1;
             s.push({x,y});
@@ -385,6 +386,7 @@ bool rwa2::Mouse::search_maze(int x, int y){
         // v_align_direction(1); //Rotate east
         // give_info(1,x+1,y);
         // sleep(1);
+        std::cerr<<" East: is_valid: "<<is_valid(x,y,1)<<" is_visited: "<<is_visited(x+1,y);
         if(is_valid(x,y,1) && !is_visited(x+1,y)) //is_valid() gives 'wall_present?'
         {
         x+=1;
@@ -399,6 +401,7 @@ bool rwa2::Mouse::search_maze(int x, int y){
    if(!found_dir){
         // v_align_direction(2); //Rotate south
         // give_info(2,x,y-1);
+        std::cerr<<"South: is_valid: "<<is_valid(x,y,2)<<" is_visited: "<<is_visited(x,y-1);
         if(is_valid(x,y,2) && !is_visited(x,y-1)) //is_valid() gives 'wall_present?'
         {y-=1;
         s.push({x,y});
@@ -412,6 +415,7 @@ bool rwa2::Mouse::search_maze(int x, int y){
     if(!found_dir){
         // v_align_direction(3); //Rotate west
         // give_info(3,x-1,y);
+        std::cerr<<"West: is_valid: "<<is_valid(x,y,3)<<" is_visited: "<<is_visited(x-1,y);
         if(is_valid(x,y,3) && !is_visited(x-1,y)) //is_valid() gives 'wall_present?'
         {x-=1;
         s.push({x,y});
@@ -447,7 +451,10 @@ bool rwa2::Mouse::move_path_step(int x, int y){
     std::cerr<<"m_direction here is: "<<m_direction;
     std::cerr<<"step destination x:"<<x;
     std::cerr<<"step destination y:"<<y;
-    
+    m_maze.at(m_x).at(m_y).set_wall(m_direction,API::wallFront());
+    m_maze.at(m_x).at(m_y).set_wall((m_direction+3)%4,API::wallLeft());
+    m_maze.at(m_x).at(m_y).set_wall((m_direction+1)%4,API::wallRight());
+    display_walls();
     int rotation_direction {0};
     bool same_pos=true;
     if(y-m_y!=0){
@@ -501,13 +508,17 @@ bool rwa2::Mouse::trace_path(){
     //     // move_forward();
     //     // API::moveForward();
         std::cerr<<"MOVING PATH STEP TO POINT:"<<temp.top()[0]<<", "<<temp.top()[1];
-        if(!move_path_step(temp.top()[0],temp.top()[1]))
+
+        if(!move_path_step(temp.top()[0],temp.top()[1])) //if cannot move-wall found, pop, and go to top node.
             {
             // std::cerr<<"v_x at break is:"<<x<<"v_y at break is:"<<y<<" v_direction at break"<<v_direction;
             modify_maze(m_x,m_y,m_direction);
-            std::stack<std::array<int,2>> empty{};
+            std::stack<std::array<int,2>> empty_stack{};
+            
             API::clearAllColor();
-            s=empty;
+            s=empty_stack;
+            std::vector<std::array<int,2>> empty_vector {};
+            visited=empty_vector;
             return false;
             }
         temp.pop();

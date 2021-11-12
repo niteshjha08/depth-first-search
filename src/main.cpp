@@ -4,34 +4,8 @@
 
 #include "../include/mouse/mouse.h"
 
-
-// int main() {
-// 	rwa2::Mouse mouse;
-	
-// 	mouse.display_walls();
-// 	// for(int i=0;i<5;++i)
-// 	// 	mouse.move_forward();
-// 		// API::moveForward();
-// 		// std::cerr<<"Turning right";
-// 	// mouse.new_search(2,13);
-// 	if(mouse.v_new_search(1,13)){
-// 		// {mouse.color_path();
-// 		std::cerr<<"TRACED PATH";	
-// 		mouse.trace_path();
-// 		// for(int i=0;i<14;++i)
-//         //     mouse.move_forward();
-// 		}
-
-// 	else
-// 		std::cerr<<"SEARCH FAILED";
-	
-// 	// std::flush(std::cerr);
-	
-// 	}
-		
-
 /*
-Structure of calling functions:
+Flow of recursive calls:
 while(true){
 	if(search_maze(m_x,m_y))  ---> search the path from current mouse posn. to goal
 		{if(mouse.trace_path())    ---> move along the stack generated from search_maze, trace_path traverses and returns 
@@ -44,7 +18,7 @@ while(true){
 int main(){
 
 	rwa2::Mouse mouse;
-	mouse.set_goal(15,3);
+	mouse.set_goal(7,7);
 	// if(mouse.search_maze(0,0))
 	// 	mouse.print_stack();
 	bool found=false;
@@ -63,11 +37,7 @@ int main(){
 			
 			
 	}
-	// if(!found){
-		// API::moveForward();
-	// 	std::cout<<"Goal not found";
-	// 	std::cerr<<"Goal not found";
-	// }
+	
 
 	
 }
