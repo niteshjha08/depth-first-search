@@ -80,8 +80,8 @@ namespace rwa2 {
          * @return false A path is not found
          */
         bool search_maze(int goal_x,int goal_y);
-        bool new_search (int,int);
-        bool v_new_search (int,int);
+        // bool new_search (int,int);
+        // bool v_new_search (int,int);
         bool is_visited(int,int);
         bool v_is_visited(int,int);
         /**
@@ -90,6 +90,7 @@ namespace rwa2 {
          */
         void move_forward();
         void v_move_forward();
+        void modify_maze(int,int,int);
         /**
          * @brief Make the mouse rotate 90 deg CCW
          *
@@ -102,7 +103,7 @@ namespace rwa2 {
          */
         void turn_right();
         void v_turn_right();
-        bool is_valid(int);
+        bool is_valid(int,int,int);
         bool v_is_valid(int);
 
         void align_direction(int);
@@ -114,8 +115,8 @@ namespace rwa2 {
 
         void print_stack();
         void v_print_stack();
-        void trace_path();
-        
+        bool trace_path();
+        std::array<int,2> get_position();
         void color_path();
         std::vector<std::array<int,2>> visited {};
         std::stack<std::array<int,2>> s {};
@@ -124,8 +125,10 @@ namespace rwa2 {
         static const int m_maze_width{ 16 }; //width of the maze
         static const int m_maze_height{ 16 };//height of the maze
         std::array<std::array<Node, m_maze_width>, m_maze_height> m_maze; //2D array maze object
-
+        void set_goal(int,int);
         private:
+        int goal_x;
+        int goal_y;
         int v_x;
         int v_y;
         int v_direction;
