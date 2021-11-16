@@ -1,15 +1,14 @@
 /**
- * @file api.h
- * @author Zeid Kootbally (zeidk@umd.edu)
- * @brief This file is copied from the example downloaded from github
- *
- *This file consists of all the methods to interact with the simulator
+ * @file node.h
+ * @author Nitesh Jha (niteshj@umd.edu), Anish Mitra (amitra12@umd.edu), Naveen Mangla (nmangla@umd.edu)
+ * @brief This file contains a class to represent a node in a maze.
  * @version 0.1
  * @date 2021-10-24
  * 
  * @copyright Copyright (c) 2021
  * 
  */
+
 #pragma once
 
 #include <string>

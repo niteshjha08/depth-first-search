@@ -1,0 +1,2 @@
+build command:g++ api.cpp main.cpp node.cpp mouse.cpp
+run command: ./a.out

@@ -4,39 +4,31 @@
 
 #include "../include/mouse/mouse.h"
 
+
 /*
-Flow of recursive calls:
-while(true){
-	if(search_maze(m_x,m_y))  ---> search the path from current mouse posn. to goal
-		{if(mouse.trace_path())    ---> move along the stack generated from search_maze, trace_path traverses and returns 
-										true if there are no obstacles and entire path is traversed, else false.
-			break;
-		
-		}
-}
+Set a goal to either of the possible goals.
+Search path from origin to goal. 
 */
 int main(){
 
 	rwa2::Mouse mouse;
-	mouse.set_goal(7,7);
-	// if(mouse.search_maze(0,0))
-	// 	mouse.print_stack();
+	std::array<int,2> G1={7,7};
+	std::array<int,2> G2={7,8};
+	std::array<int,2> G3={8,7};
+	std::array<int,2> G4={8,8};
+
+	mouse.set_goal(G1[0],G1[1]);
+
 	bool found=false;
-	while(mouse.search_maze(mouse.get_position()[0],mouse.get_position()[1])){
-	// while(mouse.search_maze(11,15)){
+	while(mouse.search_maze(mouse.get_position()[0],mouse.get_position()[1])){ //search the path from current mouse posn. to goal
+	//move along the stack generated from search_maze, trace_path traverses and returns 
+	//  true if there are no obstacles and entire path is traversed, else false.
 		if(mouse.trace_path())
 			{found=true;
-			// for(int i=0;i<16;++i)API::moveForward();
-			break;}
-		else{
-			std::cerr<<"Recalculating maze";
-			std::cerr<<"Mouse is at:"<<mouse.get_position()[0]<<", "<<mouse.get_position()[1];
-			mouse.print_stack();
-			// for(int i=0;i<16;++i)API::moveForward();
-			}
-			
-			
+			break;}		
 	}
+	if(!found)
+		std::cerr<<"Solution not found!";
 	
 
 	

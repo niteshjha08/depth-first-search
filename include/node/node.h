@@ -1,6 +1,6 @@
 /**
  * @file node.h
- * @author Zeid Kootbally (zeidk@umd.edu)
+ * @author Nitesh Jha (niteshj@umd.edu), Anish Mitra (amitra12@umd.edu), Naveen Mangla (nmangla@umd.edu)
  * @brief This file contains a class to represent a node in a maze.
  * @version 0.1
  * @date 2021-10-24
